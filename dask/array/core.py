@@ -4123,7 +4123,9 @@ def to_zarr(
     # Dask chunks are not a whole multiple of it, several Dask blocks write into the same
     # Zarr chunk concurrently, which silently corrupts it. Align the Dask chunks with the
     # on-disk chunks so that every Zarr chunk is written by exactly one block.
-    if any(c[0] % zc for c, zc in zip(arr.chunks, z.chunks, strict=True) if len(c) >= 1):
+    if any(
+        c[0] % zc for c, zc in zip(arr.chunks, z.chunks, strict=True) if len(c) >= 1
+    ):
         warnings.warn(
             f"The Dask chunks do not align with the requested Zarr chunks {z.chunks}. "
             "Rechunking to aligned chunks to ensure the data can be written safely. To "
